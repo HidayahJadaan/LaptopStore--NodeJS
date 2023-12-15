@@ -31,7 +31,7 @@ const server = http.createServer((req, res) => {
         let overviewOutput =data;
 
         fs.readFile(`${__dirname}/templates/card.html`,"utf-8",(err, data) => {
-            const cardsOutput = laptopData.map((currentLaptop) =>replaceTemplate(data, currentLaptop).join(''));
+            const cardsOutput = laptopData.map((currentLaptop) =>replaceTemplate(data, currentLaptop)).join('');
             overviewOutput = overviewOutput.replace('{%CARDS%}', cardsOutput);
 
             res.end(overviewOutput);
@@ -56,6 +56,14 @@ const server = http.createServer((req, res) => {
       res.end(output);
     });
   }
+
+//   Route For Images
+else if ((/\.(jpg|jpeg|png|gif)$/i).test(pathName)) {
+    fs.readFile(`${__dirname}/data/img${pathName}`, (err, data) => {
+        res.writeHead(200, { 'Content-type': 'image/jpg'});
+        res.end(data);
+    });
+}
   //   URL NOT FOUND
   else {
     res.writeHead(200, {
